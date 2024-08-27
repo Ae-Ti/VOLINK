@@ -1,0 +1,71 @@
+<html layout:decorate="~{layout}">
+<div layout:fragment="content" class="containers my-4">
+    <!-- User Information Section -->
+    <div class="row" style="width:700px; margin:auto;">
+        <div class="col-12 mb-4">
+            <h1 class="display-5 mb-3" th:text="|${siteUser.username}님의 정보|"></h1>
+            <div class="rounded bg-light p-4 shadow-sm">
+                <ul class="list-unstyled mb-4">
+                    <li>
+                        <h4 class="mb-2" th:text="|나이: ${siteUser.age}|"></h4>
+                    </li>
+                    <li>
+                        <h4 class="mb-2" th:text="|이메일: ${siteUser.email}|"></h4>
+                    </li>
+                </ul>
+                <!-- Volunteer History Section -->
+                <h3 class="h5 border-bottom pb-2 mb-3">봉사이력</h3>
+                <div class="mb-4">
+                    <p class="mb-1" th:text="|나눔 이력: ${#lists.size(siteUser.Helped)}|">나눔 이력: 5</p>
+                    <p class="mb-1" th:text="|등록 이력: ${#lists.size(questions)}|">등록 이력: 3</p>
+                </div>
+                <!-- Rating Section -->
+                <h3 class="h5 border-bottom pb-2 mb-3">평점</h3>
+                <div>
+                    <p class="fs-4" th:text="|${grades}/5.0|">4.5/5.0</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Reviews Section -->
+    <div class="row my-3">
+        <div class="col-12" style="width:1000px; margin:auto;">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="border-bottom py-2 mb-0"
+                    th:text="|${#lists.size(siteUser.review)}개의 후기가 있습니다.|">5개의 후기가 있습니다.</h5>
+                <a th:href="@{|/${siteUser.username}/create|}"
+                   sec:authorize="isAuthenticated()"
+                   th:if="${siteUser != null and (#authentication.getPrincipal().getUsername() != siteUser.username)}"
+                   class="btn btn-primary">후기 등록하기</a>
+            </div>
+            <!-- Reviews Table -->
+            <table class="table table-hover">
+                <thead class="table-dark">
+                <tr class="text-center">
+                    <th>평점</th>
+                    <th style="width:50%">내용</th>
+                    <th>글쓴이</th>
+                    <th>작성일시</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="review, loop : ${siteUser.getReview()}">
+                    <td class="text-center">
+                        <span th:text="${review.grade}">4.0</span>
+                    </td>
+                    <td th:text="${review.content}">후기 내용이 여기에 표시됩니다.</td>
+                    <td class="text-center">
+                        <a th:href="@{|/review/list/${siteUser.username}|}"
+                           th:if="${review.siteUser != null}"
+                           th:text="${review.siteUser.username}">작성자</a>
+                    </td>
+                    <td class="text-center" th:text="${review.createDate}">2024-08-27</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+</html>

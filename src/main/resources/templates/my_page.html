@@ -1,0 +1,81 @@
+<html layout:decorate="~{layout}">
+<div layout:fragment="content" class="containers my-4" style="width:870px; margin:auto;">
+    <div class="row mb-3">
+        <div class="col">
+            <h1 class="display-4" th:text="|${siteUser.getUsername()}님, 환영합니다.|">프로필(이름)</h1>
+        </div>
+    </div>
+    <!-- Page Content Wrapper -->
+    <div class="row" style="width:1000px; margin:auto;">
+        <!-- User Information Section (Left Side) -->
+        <div class="col-md-4">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="h5 mb-0">회원정보</h2>
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled mb-0">
+                        <li class="mb-2">
+                            <i class="fas fa-user-circle me-2"></i>
+                            <span th:text="|${siteUser.getUsername()}|">이름</span>
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-birthday-cake me-2"></i>
+                            <span th:text="|나이: ${siteUser.age}|">나이: </span>
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-envelope me-2"></i>
+                            <span th:text="|이메일: ${siteUser.getEmail()}|">이메일: </span>
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-phone me-2"></i>
+                            <span th:text="|전화번호: ${siteUser.phone}|">전화번호: </span>
+                        </li>
+                    </ul>
+                    <a sec:authorize="isAuthenticated()"
+                       th:if="${#authentication.getPrincipal().getUsername() != null }"
+                       th:href="@{/user/userModify/{username}(username=${#authentication.getPrincipal().getUsername()})}"
+                       th:text="|회원정보 수정|"
+                       class="btn btn-primary w-100 mt-3">회원정보 수정</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Activity Sections (Right Side) -->
+        <div class="col-md-8" style="width:400px; margin-left:50px;">
+            <!-- Sharing History -->
+            <div class="rounded bg-light p-4 mb-4">
+                <h2 class="h5 mb-3">나눔 이력</h2>
+                <ul class="list-group list-group-flush mb-3">
+                    <li class="list-group-item">
+                        <a th:href="@{/user/acceptList/{username}(username=${#authentication.getPrincipal().getUsername()})}"
+                           th:text="|신청이 수락된 봉사 목록|"
+                           class="btn btn-outline-primary w-100">신청이 수락된 봉사 목록</a>
+                    </li>
+                    <li class="list-group-item">
+                        <a th:href="@{/user/requestList/{username}(username=${#authentication.getPrincipal().getUsername()})}"
+                           th:text="|신청 진행중인 봉사 목록|"
+                           class="btn btn-outline-primary w-100">신청 진행중인 봉사 목록</a>
+                    </li>
+                    <li class="list-group-item">
+                        <a th:href="@{/user/completeList/{username}(username=${#authentication.getPrincipal().getUsername()})}"
+                           th:text="|완료한 봉사 목록|"
+                           class="btn btn-outline-primary w-100">완료한 봉사 목록</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- Registration History -->
+            <div class="rounded bg-light p-4">
+                <h2 class="h5 mb-3">등록 이력</h2>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <a th:href="@{/user/registrationList/{username}(username=${#authentication.getPrincipal().getUsername()})}"
+                           th:text="|확인하러 가기|"
+                           class="btn btn-outline-primary w-100">확인하러 가기</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+</html>
